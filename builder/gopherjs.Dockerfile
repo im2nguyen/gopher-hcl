@@ -7,7 +7,7 @@ ADD main.go ./
 RUN go mod init gopher-hcl
 RUN go mod vendor
 
-RUN ls vendor/src/github.com/hashicorp/hcl
+RUN ls vendor
 
 RUN GOPATH=vendor/ gopherjs build main.go -o build.js
 
