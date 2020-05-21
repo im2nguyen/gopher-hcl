@@ -1,9 +1,9 @@
 FROM golang:1.12
 
+WORKDIR gopher-hcl
 ADD main.go ./
-
-RUN go get github.com/gopherjs/gopherjs
-RUN GO111MODULE=on go get github.com/hashicorp/hcl
+RUN go mod init gopher-hcl
+RUN go mod vendor
 
 RUN gopherjs build main.go -o build.js
 
