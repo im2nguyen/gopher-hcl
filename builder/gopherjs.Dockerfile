@@ -7,6 +7,6 @@ ADD main.go ./
 RUN go mod init gopher-hcl
 RUN go mod vendor
 
-RUN gopherjs build main.go -o build.js
+RUN GOPATH=vendor/ gopherjs build main.go -o build.js
 
 CMD ["cat", "build.js"]
