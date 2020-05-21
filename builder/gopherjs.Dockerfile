@@ -1,5 +1,7 @@
 FROM golang:1.12
 
+RUN go get github.com/gopherjs/gopherjs
+
 WORKDIR gopher-hcl
 ADD main.go ./
 RUN go mod init gopher-hcl
