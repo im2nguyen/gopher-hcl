@@ -1,31 +1,18 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"os"
-
 	"github.com/gopherjs/gopherjs/js"
-	"github.com/hashicorp/hcl2/hcl"
-	"github.com/hashicorp/hcl2/hclpack"
+	hcl "github.com/hashicorp/hcl/v2"
+
+	"github.com/hashicorp/hcl/v2/hclsyntax"
 )
 
-func parse(src []byte) (interface{}, error) {
-	body, diags := hclpack.PackNativeFile([]byte(src), "", hcl.Pos{Line: 1, Column: 1})
+func parse(bytes []byte) (map[string]interface{}, error) {
+	file, diags := hclsyntax.ParseConfig(bytes, "", hcl.Pos{Line: 1, Column: 1})
 	if diags.HasErrors() {
-		fmt.Fprintf(os.Stderr, "Failed to parse: %s", diags.Error())
 		return nil, diags
 	}
-	result, err := body.MarshalJSON()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to marshal: %s", err)
-		return nil, err
-	}
-
-	var jobj interface{}
-	json.Unmarshal(result, &jobj)
-
-	return jobj, nil
+	return convertFile(file)
 }
 
 func main() {
